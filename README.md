@@ -31,39 +31,39 @@ Throw this in your .bashrc for extra credit.
 ## Functions
 | **Function** | **Description** |
 |:-------------|:----------------|
-|lsinfo|Display useful system information|
-|lsbwprompt|Switch to a plain prompt.|
-|lscolorprompt|Switch to a fancy colorized prompt.|
-|lsbigfiles|List the top 50 files based on disk usage.|
-|lsmytuner|MySQL Tuner.|
-|lshighio|Reports stats on processes in an uninterruptable sleep state.|
-|lsmylogin|Auto login to MySQL|
-|lsmyengines|List MySQL tables and their storage engine.|
-|lsmyusers|List MySQL users and grants.|
-|lsmycreate|Creates a MySQL DB and MySQL user|
-|lsmycopy|Copies an existing database to a new database.|
 |lsapcheck|Verify apache max client settings and memory usage.|
 |lsapdocs|Prints out Apache's DocumentRoots|
 |lsapproc|Shows the memory used by each Apache process|
-|lsrblcheck|Server Email Blacklist Check|
+|lsbigfiles|List the top 50 files based on disk usage.|
+|lsbwprompt|Switch to a plain prompt.|
 |lscloudkick|Installs the Cloudkick agent|
-|lsvhost|Add an Apache virtual host|
-|lsvsftpd|Installs/configures vsftpd|
-|lspostfix|Set up Postfix for relaying email|
-|lsparsar|Pretty sar output|
-|lslsync|Install lsyncd and configure this server as a master|
-|lswordpress|Install Wordpress on this server|
-|lsdrupal|Install Drupal 7 on this server|
-|lswebmin|Install Webmin on this server|
-|lsvarnish|Installs Varnish 3.0|
+|lscolorprompt|Switch to a fancy colorized prompt.|
 |lsconcurchk |Show concurrent connections|
 |lscrtchk|Check SSL Cert/Key to make sure they match|
-|lsrpaf|Install mod_rpaf to set correct client IP behind a proxy.|
-|lspma|Installs phpMyAdmin|
-|lsnginx|Replace Apache with nginx/php-fpm|
+|lsdrupal|Install Drupal 7 on this server|
 |lshaproxy|Install HAProxy on this server|
+|lshighio|Reports stats on processes in an uninterruptable sleep state.|
 |lshppool|Adds a new pool to an existing HAProxy config|
-|lswhatis|Output the script that would be run with a specific command.|
+|lsinfo|Display useful system information|
+|lslsync|Install lsyncd and configure this server as a master|
+|lsmycopy|Copies an existing database to a new database.|
+|lsmycreate|Creates a MySQL DB and MySQL user|
+|lsmyengines|List MySQL tables and their storage engine.|
+|lsmylogin|Auto login to MySQL|
+|lsmytuner|MySQL Tuner.|
+|lsmyusers|List MySQL users and grants.|
+|lsnginx|Replace Apache with nginx/php-fpm|
 |lsnodejs|Installs Node.js and Node Package Manager|
+|lsparsar|Pretty sar output|
+|lspma|Installs phpMyAdmin|
+|lspostfix|Set up Postfix for relaying email|
+|lsrblcheck|Server Email Blacklist Check|
+|lsrpaf|Install mod_rpaf to set correct client IP behind a proxy.|
+|lsvarnish|Installs Varnish 3.0|
+|lsvhost|Add an Apache virtual host|
+|lsvsftpd|Installs/configures vsftpd|
+|lswebmin|Install Webmin on this server|
+|lswhatis|Output the script that would be run with a specific command.|
+|lswordpress|Install Wordpress on this server|
 
 Enjoy!
