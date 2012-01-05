@@ -1,6 +1,5 @@
 #!/bin/bash
-# Author: Hart Hoover
-# Installs phpMyAdmin on CentOS, RHEL, and Ubuntu
+# Installs phpMyAdmin on CentOS, RHEL
 
 function install_phpmyadmin() {
 	if [[ ${distro} = "Redhat/CentOS" ]]; then
@@ -25,18 +24,51 @@ function install_phpmyadmin() {
 	fi
 }
 
+function create_selfsignedcert() {
+mkdir /etc/httpd/sslcerts
+cd /etc/httpd/sslcerts
+
+openssl req -new -newkey rsa:2048 -nodes -out ${IP}.csr -keyout ${IP}.key -subj "/C=US/ST=Texas/L=San Antonio/O=Rackspace Hosting/CN=${HOST}"
+openssl x509 -req -days 3650 -in ${IP}.csr -signkey ${HOST}.key -out ${IP}.crt
+}
+
 function configure_apache() {
 	if [[ ${distro} = "Redhat/CentOS" ]]; then
 		mv /etc/httpd/conf.d/phpMyAdmin.conf /etc/httpd/conf.d/phpMyAdmin.conf.orig
 		echo "phpMyAdmin.conf backed up to phpMyAdmin.conf.orig"
 		cat > /etc/httpd/conf.d/phpMyAdmin.conf <<-EOF
-		Alias /phpMyAdmin /usr/share/phpMyAdmin
-		Alias /phpmyadmin /usr/share/phpMyAdmin
-		<Directory /usr/share/phpMyAdmin/libraries>
-		    Order Deny,Allow
-		    Deny from All
-		    Allow from None
-		</Directory>
+		<VirtualHost ${IP}:443>
+  		DocumentRoot /var/www/shtml
+    	Alias /phpMyAdmin /usr/share/phpMyAdmin
+    	Alias /phpmyadmin /usr/share/phpMyAdmin
+    	SSLEngine on
+    	SSLCertificateFile /etc/httpd/sslcerts/${IP}.crt
+    	SSLCertificateKeyFile /etc/httpd/sslcerts/${IP}.key
+    	<Directory /usr/share/phpMyAdmin/>
+        	Order Deny,Allow
+           		Deny from None
+        	Allow from All
+    	</Directory>
+
+		# This directory does not require access over HTTP - taken from the original
+		# phpMyAdmin upstream tarball
+		#
+    	<Directory /usr/share/phpMyAdmin/libraries>
+        	Order Deny,Allow
+        	Deny from All
+        	Allow from None
+    	</Directory>
+
+		# This configuration prevents mod_security at phpMyAdmin directories from
+		# filtering SQL etc.  This may break your mod_security implementation.
+		#
+		#    <IfModule mod_security.c>
+		#        <Directory /usr/share/phpMyAdmin>
+		#            SecRuleInheritance Off
+		#        </Directory>
+		#    </IfModule>
+
+		</VirtualHost>
 		EOF
 		service httpd reload > /dev/null 2>&1
 		echo "Apache restarted"
