@@ -24,6 +24,12 @@ function install_phpmyadmin() {
 	fi
 }
 
+function add_mod_ssl() {
+cat > /etc/httpd/conf.d/ssl.conf <<-EOF
+LoadModule ssl_module modules/mod_ssl.so
+EOF
+}
+
 function create_selfsignedcert() {
 mkdir /etc/httpd/sslcerts
 cd /etc/httpd/sslcerts
@@ -86,8 +92,10 @@ echo "Beginning phpMyAdmin installation"
 install_phpmyadmin
 echo "Configuring Apache"
 configure_apache
+echo "Add mod_ssl"
+add_mod_ssl
 echo "phpMyAdmin installation complete."
-echo "phpMyAdmin is available here: http://${IP}/phpmyadmin"
+echo "phpMyAdmin is available here: https://${IP}/phpmyadmin"
 echo "Your MySQL root credentials are:"
 grep -v "client" /root/.my.cnf
 exit 0
