@@ -42,7 +42,9 @@ function configure_apache() {
 		mv /etc/httpd/conf.d/phpMyAdmin.conf /etc/httpd/conf.d/phpMyAdmin.conf.orig
 		echo "phpMyAdmin.conf backed up to phpMyAdmin.conf.orig"
 		cat > /etc/httpd/conf.d/phpMyAdmin.conf <<-EOF
-		<VirtualHost ${IP}:443>
+		<VirtualHost ${IP}:444>
+		Listen 444
+		NameVirtualHost *:444
   		DocumentRoot /var/www/shtml
     	Alias /phpMyAdmin /usr/share/phpMyAdmin
     	Alias /phpmyadmin /usr/share/phpMyAdmin
@@ -86,17 +88,24 @@ function configure_apache() {
 		exit 1
 	fi
 }
+
+function openfw_port() {
+iptables -I RH-Firewall-1-INPUT -p tcp -m tcp --dport 444 -m comment --comment "PMASSL" -j ACCEPT
+service iptables save
+}
+
 IP=$( ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}' )
 echo "Beginning phpMyAdmin installation"
 install_phpmyadmin
-echo "Add mod_ssl"
+echo "Adding mod_ssl"
 create_selfsignedcert
 add_mod_ssl
 echo "Configuring Apache"
 configure_apache
-
+echo "Opening firewall port 444"
+openfw_port
 echo "phpMyAdmin installation complete."
-echo "phpMyAdmin is available here: https://${IP}/phpmyadmin"
+echo "phpMyAdmin is available here: https://${IP}:444/phpmyadmin"
 echo "Your MySQL root credentials are:"
 grep -v "client" /root/.my.cnf
 exit 0
